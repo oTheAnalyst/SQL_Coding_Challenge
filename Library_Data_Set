@@ -1,0 +1,147 @@
+
+-----find out how many copies of dracula exist withing the library-------------
+SELECT COUNT(Title) 
+FROM Books 
+WHERE Title="Dracula";
+
+SELECT COUNT(Books.Title)
+FROM Loans 
+JOIN Books 
+ON Loans.BookID=Books.BookID
+WHERE Books.Title="Dracula" AND Loans.ReturnedDate IS NULL
+
+SELECT 
+	(SELECT COUNT(Books.Title) FROM Books WHERE Books.Title="Dracula") 
+	-
+	(SELECT COUNT(Books.Title)
+		FROM Loans
+		JOIN Books ON Loans.BookID=Books.BookID
+		WHERE Books.Title="Dracula" AND Loans.ReturnedDate IS NULL) 
+AS AvailableBooks;
+
+----add two books to the library DB-------
+SELECT * FROM Books
+LIMIT 5;
+
+INSERT INTO Books
+(Title, Author, Published,Barcode)
+VALUES
+("Dracula","Bram Stroker",1897,4819277482),
+("Gulliver's Travels","Jonathan Swift",1729,4899254401);
+---------------------------
+SELECT * FROM Loans
+LIMIT 5;
+
+SELECT FirstName,
+LastName,
+PatronID
+FROM Patrons
+WHERE FirstName = "Jack" AND LastName = "Vaan";
+
+SELECT
+PatronID
+FROM Patrons
+WHERE FirstName = "Jack" AND LastName = "Vaan";
+
+SELECT BookID
+FROM Books
+WHERE Barcode = 2855934983 OR
+Barcode = 4043822646;
+
+INSERT INTO Loans
+(BookID, PatronID, LoanDate, DueDate)
+VALUES
+((SELECT BookID FROM Books WHERE Barcode = 2855934983),
+(SELECT PatronID FROM Patrons WHERE FirstName = "Jack" AND LastName = "Vaan"),
+"2020-08-25","2020-09-08"),
+((SELECT BookID
+FROM Books
+Barcode = 4043822646;)),
+(SELECT
+PatronID
+FROM Patrons
+WHERE FirstName = "Jack" AND LastName = "Vaan";),"2020-08-25","2020-09-08");
+
+--------------------
+SELECT * FROM Loans
+WHERE DueDate = "2020-07-13"
+
+SELECT * 
+FROM Books
+WHERE BookID IN (10,155,169,73)
+
+SELECT *
+FROM Patrons
+WHERE PatronID IN (99,47,18,59)
+
+CREATE VIEW JOINEDTB1 AS 
+SELECT *
+FROM Loans AS tb1
+INNER JOIN Patrons as tb2
+ON tb1.PatronID = tb2.PatronID
+INNER JOIN Books AS tb3
+ON tb1.BookID = tb3.BookID
+WHERE DueDate = "2020-07-13"
+
+SELECT FirstName, 
+LastName, 
+Email, 
+Author, 
+Barcode,
+LoanDate, 
+DueDate,
+ifnull(ReturnedDate,"Not Returned") AS STATUS
+FROM JOINEDTB1
+-------------------------
+SELECT * FROM Books
+WHERE Barcode IN(6435968624,5677520613, 8730298424)
+
+UPDATE Loans
+SET ReturnedDate = "2020-07-05"
+WHERE BookID IN(46,105,73) AND ReturnedDate is NULL
+
+SELECT *
+FROM Loans
+WHERE BookID IN(46,105,73) AND ReturnedDate = "2020-07-05"
+-------------
+SELECT PatronID, count(bookID) AS "LoanedBooks"
+FROM Loans
+GROUP BY PatronID
+ORDER BY LoanedBooks ASC
+LIMIT 10;
+
+SELECT *
+FROM Patrons 
+WHERE PatronID IN(69,
+83,
+73,
+64,
+94,
+3,
+7,
+12,
+16,
+6)
+---------------------------
+
+SELECT DISTINCT TB1.Title,
+TB1.BookID
+FROM BOOKS AS TB1
+INNER JOIN Loans AS TB2
+ON TB1.BookID = TB2.BookID
+WHERE Published BETWEEN 1890 AND 1899 AND ReturnedDate IS NOT NULL
+--------------------
+SELECT Published AS Year, count(Published) AS Number
+FROM Books
+GROUP BY Published
+ORDER BY Number DESC
+
+SELECT TB1.BookID, TB2.Title, 
+COUNT(TB1.BookID) AS Books_Checked_Out
+FROM LOANS AS TB1
+INNER JOIN Books AS TB2
+ON TB1.BookID = TB2.BookID
+GROUP BY TB1.BookID
+ORDER BY Books_Checked_Out DESC
+LIMIT 5;
+
