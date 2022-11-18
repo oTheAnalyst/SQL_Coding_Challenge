@@ -1,3 +1,5 @@
+-----print menu------
+
 SELECT FirstName,LastName,Email
 FROM customers
 ORDER BY LastName ASC;
@@ -20,7 +22,8 @@ SELECT * FROM Dishes
 WHERE Type != "Beverage"
 ORDER BY Type
 
---------------------
+
+-------Sign a customer up for your loyalty program-------------
 INSERT INTO Customers
 	(FirstName, LastName, Email, Address, City, State, Phone, Birthday)
 	VALUES
@@ -37,14 +40,14 @@ UPDATE Customers
 SET Address = "74 Pine St.", City = "New York", State = "NY"
 WHERE CustomerID = 26
 
--------------------
+-------Remove a customers record------------
 SELECT * FROM Customers
 WHERE CustomerID = 4;
 
 DELETE FROM Customers
 WHERE CustomerID = 4;
 
---------------
+------log customers response--------
 INSERT INTO anneversary_rsvp 
 (CustomerID,PartySize)
 VALUES
@@ -53,14 +56,14 @@ VALUES
 
 SELECT * FROM anneversary_rsvp
 
-----------------
+--------look up reservations--------
 SELECT TB1.CustomerID, TB2.FirstName, TB2.LastName, TB1.Date, TB1.PartySize
 FROM Reservations AS TB1
 INNER JOIN Customers AS TB2
 ON TB1.CustomerID = TB2.CustomerID
 WHERE LastName LIKE 'STE%' AND PartySize = 4;
 
-------------
+------take reservation------
 SELECT * FROM Reservations
 
 INSERT INTO Customers
@@ -75,7 +78,8 @@ WHERE Email = "smac@rouxacademy.com"),"2020-07-14 18:00:00", 5);
 
 SELECT * FROM Reservations
 WHERE Date = "2020-07-14 18:00:00"
----------------------
+
+---------take a delivery order------------
 SELECT CustomerID 
 FROM Customers
 WHERE FirstName = "Loretta" AND LastName = "Hundey"
@@ -113,7 +117,8 @@ SELECT SUM(Dishes.Price)
 FROM Dishes 
 JOIN OrdersDishes ON
 Dishes.DishID=OrdersDishes.DishID WHERE OrdersDishes.OrderID="1001";
------------------
+
+-------track your customer's favorite dish----------
 SELECT DishID
 FROM Dishes
 WHERE  Name = "Quinoa Salmon Salad"
@@ -129,7 +134,7 @@ FROM Dishes
 WHERE  Name = "Quinoa Salmon Salad")
 WHERE LastName = "Goldwater"
 
-----------------
+--------Prepare a report of your top five customers--------
 SELECT COUNT(CustomerID) AS ordercount ,CustomerID
 FROM Orders
 GROUP BY CustomerID
