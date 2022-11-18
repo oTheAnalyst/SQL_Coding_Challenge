@@ -1,5 +1,5 @@
 
------find out how many copies of dracula exist withing the library-------------
+-----find out how many Dracula Books exist in the library-------------
 SELECT COUNT(Title) 
 FROM Books 
 WHERE Title="Dracula";
@@ -28,7 +28,8 @@ INSERT INTO Books
 VALUES
 ("Dracula","Bram Stroker",1897,4819277482),
 ("Gulliver's Travels","Jonathan Swift",1729,4899254401);
----------------------------
+
+-------------Check out Books --------------
 SELECT * FROM Loans
 LIMIT 5;
 
@@ -62,7 +63,7 @@ PatronID
 FROM Patrons
 WHERE FirstName = "Jack" AND LastName = "Vaan";),"2020-08-25","2020-09-08");
 
---------------------
+---------check for books due back by a certain date-----------
 SELECT * FROM Loans
 WHERE DueDate = "2020-07-13"
 
@@ -92,7 +93,8 @@ LoanDate,
 DueDate,
 ifnull(ReturnedDate,"Not Returned") AS STATUS
 FROM JOINEDTB1
--------------------------
+
+-----------Return books to the library--------------
 SELECT * FROM Books
 WHERE Barcode IN(6435968624,5677520613, 8730298424)
 
@@ -103,7 +105,7 @@ WHERE BookID IN(46,105,73) AND ReturnedDate is NULL
 SELECT *
 FROM Loans
 WHERE BookID IN(46,105,73) AND ReturnedDate = "2020-07-05"
--------------
+-------Encourage paterons to check out books------
 SELECT PatronID, count(bookID) AS "LoanedBooks"
 FROM Loans
 GROUP BY PatronID
@@ -122,15 +124,20 @@ WHERE PatronID IN(69,
 12,
 16,
 6)
----------------------------
 
+-----------find books to feature for an event----------------
 SELECT DISTINCT TB1.Title,
 TB1.BookID
 FROM BOOKS AS TB1
 INNER JOIN Loans AS TB2
 ON TB1.BookID = TB2.BookID
 WHERE Published BETWEEN 1890 AND 1899 AND ReturnedDate IS NOT NULL
---------------------
+
+-------Book statistics--------
+-Create a report showinghow many books were published each year
+
+-Create a report showing the five most popular books
+-------------
 SELECT Published AS Year, count(Published) AS Number
 FROM Books
 GROUP BY Published
